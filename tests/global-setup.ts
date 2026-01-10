@@ -1,29 +1,29 @@
 import { chromium, FullConfig } from "@playwright/test";
 
 async function globalSetup(config: FullConfig) {
-
   const browser = await chromium.launch();
   const context = await browser.newContext();
   const page = await context.newPage();
 
-  await page.goto("http://localhost:3000");
+  await page.goto(config.projects[0].use.baseURL as string);
 
   const email = process.env.TEST_USER_EMAIL!;
   const password = process.env.TEST_USER_PASSWORD!;
 
   if (!email || !password) {
-    throw new Error("Test user email or password not set in environment variables!");
+    throw new Error(
+      "Test user email or password not set in environment variables!",
+    );
   }
 
   await page.evaluate(
     ({ email, password }) => {
       localStorage.setItem(
         "users",
-        JSON.stringify([{ email, password }])
+        JSON.stringify([{ email, password }]),
       );
-      localStorage.setItem("userEmail", email);
     },
-    { email, password }
+    { email, password },
   );
 
   // Save storage state to a file
