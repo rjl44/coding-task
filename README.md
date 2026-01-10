@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Local Web App Setup
 
-## Getting Started
+First, ensure you have Node.js installed (see https://nodejs.org/en/download).
 
-First, run the development server:
+Next, run `npm install` to install all the dependencies.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Finally, run `npm run dev` to start the local development server.
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Playwright Testing
+Once the web app is up and running run the following command `npx playwright install` to ensure playwright browsers are installed locally.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+You will also need to create a local **`.env`** file and add the `TEST_USER_EMAIL` and `TEST_USER_PASSWORD` variables to it for the tests to pick up those variables in the tests.
+*This step is requred becasue in the pipeline these values come from Github secrets and we want to keep user credentials secure*.
 
-## Learn More
+Then you will be able to run tests from your chosen IDE or via a command such as `npx playwright test`.
 
-To learn more about Next.js, take a look at the following resources:
+If using the command above a test report will be generated after the tests have run. You will also be able to find the html report in your IDE under the generated `playwright-report` folder.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Design Choices and Improvements
+### Design Choices
+- I decided to use Playwright to as the testing freamwork of choice as it is the one I am most familliar with and it is an ideal choice for reliable end-to-end testing for modern web apps.
+- I implemented the tests using a page object model which is the Playwright best practice.
+- I made sure to use Playwright locators and web-first assertions in the tests as it is Playwright recommended and help ensure the tests run fast and smoothly.
+- I decided to use github secrets and .env to keep test user accounts secure.
+- I decided to add a github action so that the tests would run on pull requests and code merges to ensure code was only merged if tests were passing during development.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Improvements
+- In reality a web application wouldn't store user data in local storage, so if this were an actual web application, I would remove adding users to local storage in the global-setup and maybe setup users in a database using API calls.
+- Add a script to package.json which would setup the project locally in a single command.
+- Add a script/command to pull the Github secrets down into a .env file via a command to save from manually adding to the .env file each time during local development.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
