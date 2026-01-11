@@ -1,3 +1,8 @@
+# Project Overview
+This project contains:
+- A Next.js web application with basic login functionality.
+- A Playwright test suite for the web application (Playwirght tests can be found under the `/tests` directory).
+
 ## Local Web App Setup
 
 First, ensure you have Node.js installed (see https://nodejs.org/en/download).
@@ -11,8 +16,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Playwright Testing
 Once the web app is up and running run the following command `npx playwright install` to ensure playwright browsers are installed locally.
 
-You will also need to create a local **`.env`** file and add the `TEST_USER_EMAIL` and `TEST_USER_PASSWORD` variables to it for the tests to pick up those variables in the tests.
-*This step is requred becasue in the pipeline these values come from Github secrets and we want to keep user credentials secure*.
+You will also need to create a local **`.env`** file and add `TEST_USER_EMAIL` and `TEST_USER_PASSWORD` variables to it to allow the tests to pick up those variables.
+*For the purposes of these tests you can set these variables to be any strings locally as the user will be generated during the test setup in `global-setup.ts`. This step is requred becasue in the pipeline these values come from Github secrets and we want to keep user credentials secure*.
 
 Then you will be able to run tests from your chosen IDE or via a command such as `npx playwright test`.
 
@@ -30,4 +35,3 @@ If using the command above a test report will be generated after the tests have 
 - In reality a web application wouldn't store user data in local storage, so if this were an actual web application, I would remove adding users to local storage in the global-setup and maybe setup users in a database using API calls.
 - Add a script to package.json which would setup the project locally in a single command.
 - Add a script/command to pull the Github secrets down into a .env file via a command to save from manually adding to the .env file each time during local development.
-
